@@ -8,7 +8,7 @@
                   kernel,
                   stdlib,
                   leader_cron,
-                  rabbitmq_client
+                  amqp_client 
                  ]},
   {mod, {openhbx_scheduler_app, []}},
   {env, []}
