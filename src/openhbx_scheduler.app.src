@@ -2,13 +2,14 @@
  [
   {description, "Scheduler for openhbx"},
   {vsn, "0.1.0"},
-  {modules, [ohbx_day_change_schedule, openhbx_scheduler_app, openhbx_scheduler_sup]},
+  {modules, [openhbx_day_change, ohbx_day_change_schedule, openhbx_scheduler_app, openhbx_scheduler_sup]},
   {registered, []},
   {applications, [
                   kernel,
                   stdlib,
-                  leader_cron
+                  leader_cron,
+                  rabbitmq_client
                  ]},
-  {mod, { openhbx_scheduler_app, []}},
+  {mod, {openhbx_scheduler_app, []}},
   {env, []}
  ]}.
