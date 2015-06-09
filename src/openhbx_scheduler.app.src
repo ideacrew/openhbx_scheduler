@@ -1,0 +1,13 @@
+{application, openhbx_scheduler,
+ [
+  {description, "Scheduler for openhbx"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib,
+                  leader_cron
+                 ]},
+  {mod, { openhbx_scheduler_app, []}},
+  {env, []}
+ ]}.
