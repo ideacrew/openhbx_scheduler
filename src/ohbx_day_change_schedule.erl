@@ -1,4 +1,4 @@
--module(ohbx_day_change).
+-module(ohbx_day_change_schedule).
 -export([first_sunday_of_november/1,
 	second_sunday_of_march/1,
         schedules_for_EDT/0]).
