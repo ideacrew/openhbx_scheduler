@@ -10,7 +10,9 @@
 %% ===================================================================
 
 start(_StartType, _StartArgs) ->
-    openhbx_scheduler_sup:start_link().
+    Result = openhbx_scheduler_sup:start_link(),
+    openhbx_scheduler_heartbeat:schedule_task(), 
+    Result.
 
 stop(_State) ->
     ok.

@@ -2,8 +2,8 @@
  [
   {description, "Scheduler for openhbx"},
   {vsn, "0.1.0"},
-  {modules, [openhbx_day_change, ohbx_day_change_schedule, openhbx_scheduler_app, openhbx_scheduler_sup]},
-  {registered, [openhbx_day_change]},
+  {modules, [openhbx_day_change, ohbx_day_change_schedule, openhbx_scheduler_app, openhbx_scheduler_sup, openhbx_scheduler_heartbeat, openhbx_scheduler_amqp]},
+  {registered, [openhbx_day_change,openhbx_scheduler_heartbeat]},
   {applications, [
                   kernel,
                   stdlib,
