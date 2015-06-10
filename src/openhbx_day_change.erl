@@ -2,9 +2,15 @@
 
 -behaviour(gen_server).
 
--export([code_change/3, handle_info/2, init/1, terminate/2, handle_cast/2, handle_call/3, start_link/0, notify/0]).
+-export([code_change/3, handle_info/2, init/1, terminate/2, handle_cast/2, handle_call/3, start_link/0, notify/0, schedule_task/0]).
 
 -include("amqp_client.hrl").
+
+schedule_task() -> 
+	Schedules = ohbx_day_change_schedule:schedules_for_EDT(),
+	lists:foreach(fun(S) ->
+  	  leader_cron:schedule_task(S,{openhbx_day_change,notify,[]})
+	end, Schedules).
 
 start_link() -> gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 

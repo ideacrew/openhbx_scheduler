@@ -6,12 +6,11 @@
 schedules_for_EDT() ->
 	DLS_ABSENT_MONTHS = [1,2,12],
 	DLS_MONTHS = [4,5,6,7,8,9,10],
-	STATIC_MONTH_SCHEDULES = [
-		{cron, {0, 5, all, DLS_ABSENT_MONTHS, all}},
-		{cron, {0, 4, all, DLS_MONTHS, all}}
-	],
-	MarchSchedules = lists:flatmap(fun march_edt_schedules/1, lists:seq(2015,2020)),
-	NovSchedules = lists:flatmap(fun november_edt_schedules/1, lists:seq(2015,2020)),
+	STATIC_MONTH_SCHEDULES = 
+	lists:map(fun(M) -> {cron, {[0], [5], all, [M], all}} end, DLS_ABSENT_MONTHS) ++
+	lists:map(fun(M) -> {cron, {[0], [4], all, [M], all}} end, DLS_MONTHS),
+	MarchSchedules = lists:flatmap(fun march_edt_schedules/1, lists:seq(2015,2016)),
+	NovSchedules = lists:flatmap(fun november_edt_schedules/1, lists:seq(2015,2016)),
 	STATIC_MONTH_SCHEDULES ++ MarchSchedules ++ NovSchedules.
 
 splitSchedules(Year, Month, SplitDay, BeforeOffset, AfterOffset, DaysInMonth) ->

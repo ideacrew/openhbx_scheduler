@@ -11,6 +11,7 @@
 
 start(_StartType, _StartArgs) ->
     Result = openhbx_scheduler_sup:start_link(),
+    openhbx_day_change:schedule_task(), 
     openhbx_scheduler_heartbeat:schedule_task(), 
     Result.
 
