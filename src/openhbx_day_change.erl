@@ -56,6 +56,10 @@ constructMessage() ->
   Props = #'P_basic'{
 	  delivery_mode = 2,
 	  headers = [
-	  {<<"current_date">>, longstr, ohbx_day_change_schedule:yesterday()} 
+		  {<<"current_date">>, longstr, formatCurrentDate()} 
   ]},
   #amqp_msg{props = Props}.
+
+formatCurrentDate() ->
+	{{},_} = calendar:universal_time(),
+	list_to_binary(io_lib:format("~w-~2..0w-~2..0w", [Year,Month,Day])).
