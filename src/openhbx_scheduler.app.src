@@ -3,7 +3,7 @@
   {description, "Scheduler for openhbx"},
   {vsn, "0.1.0"},
   {modules, [openhbx_day_change, ohbx_day_change_schedule, openhbx_scheduler_app, openhbx_scheduler_sup]},
-  {registered, []},
+  {registered, [openhbx_day_change]},
   {applications, [
                   kernel,
                   stdlib,
@@ -13,6 +13,6 @@
   {mod, {openhbx_scheduler_app, []}},
   {env, [
      {amqp_uri, "amqp://guest:guest@localhost:5672"},
-     {exchange_name, ""}
+     {exchange_name, "dc0.preprod.e.fanout.events"}
    ]}
  ]}.

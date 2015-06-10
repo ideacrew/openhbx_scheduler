@@ -2,11 +2,13 @@
 
 -behaviour(gen_server).
 
--export([code_change/3, handle_info/2, init/1, terminate/2, handle_cast/2, handle_call/3, start_link/0]).
+-export([code_change/3, handle_info/2, init/1, terminate/2, handle_cast/2, handle_call/3, start_link/0, notify/0]).
 
 -include("amqp_client.hrl").
 
-start_link() -> gen_server:start_link(?MODULE, [], []).
+start_link() -> gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+
+notify() -> gen_server:call(?MODULE, notify).
 
 code_change(_OldVsn, State, _Extra) -> {ok, State}.
 
@@ -26,21 +28,28 @@ terminate(_Reason, _State) -> ok.
 
 handle_cast(_Request, State) -> {noreply, State}.
 
-handle_call(notify, _From, {Uri, ExchangeName}) -> 
+send_notification(Uri, ExchangeName) ->
 	{ok, Connection} = amqp_connection:start(Uri),
 	{ok, Channel} = amqp_connection:open_channel(Connection),
 	#'confirm.select_ok'{} = amqp_channel:call(Channel, #'confirm.select'{}),
 	amqp_channel:register_confirm_handler(Channel, self()),
+	ok = amqp_channel:call(Channel, constructPublish(ExchangeName), constructMessage()),
 	Result = receive
-		#'basic.ack'{}  -> {noreply, {Uri, ExchangeName}};
-		_ -> {stop, publisher_confirm_failed,{Uri, ExchangeName}}
+		#'basic.ack'{}  -> {reply, ok, {Uri, ExchangeName}};
+		_ -> {stop, publisher_confirm_failed,publisher_confirm_failed,{Uri, ExchangeName}}
           after
-            3000 -> {stop, timeout_on_publisher_confirm,{Uri,ExchangeName}}
+            2000 -> 
+		   {stop, timeout_on_publisher_confirm,timeout_on_publisher_confirm,{Uri,ExchangeName}}
 	end,
-	amqp_channel:call(channel, constructPublish(ExchangeName), constructMessage()),
 	amqp_channel:unregister_confirm_handler(Channel),
 	amqp_connection:close(Connection),
 	Result.
+
+handle_call(notify, _From, {Uri, ExchangeName}) ->
+	case catch(send_notification(Uri,ExchangeName)) of
+		{error, A} -> {stop, {error, A}, {error, A}, {Uri, ExchangeName}};
+		B -> B
+	end.
 
 
 parseAmqpConnectionSpec(Settings, DayChangeSettings) -> 
@@ -50,7 +59,7 @@ parseAmqpConnectionSpec(Settings, DayChangeSettings) ->
 	end.
 
 constructPublish(ExchangeName) ->
-  #'basic.publish'{routing_key = <<"info.events.calendar.date_change">>, exchange= ExchangeName}.
+  #'basic.publish'{routing_key = <<"info.events.calendar.date_change">>, exchange= list_to_binary(ExchangeName)}.
 
 constructMessage() ->
   Props = #'P_basic'{
@@ -61,5 +70,5 @@ constructMessage() ->
   #amqp_msg{props = Props}.
 
 formatCurrentDate() ->
-	{{},_} = calendar:universal_time(),
+	{{Year, Month, Day},_} = calendar:universal_time(),
 	list_to_binary(io_lib:format("~w-~2..0w-~2..0w", [Year,Month,Day])).
