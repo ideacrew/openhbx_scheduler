@@ -7,8 +7,8 @@ schedules_for_EDT() ->
 	DLS_ABSENT_MONTHS = [1,2,12],
 	DLS_MONTHS = [4,5,6,7,8,9,10],
 	STATIC_MONTH_SCHEDULES = [
-		{cron, {0, 20, all, DLS_ABSENT_MONTHS, all}},
-		{cron, {0, 19, all, DLS_MONTHS, all}}
+		{cron, {0, 5, all, DLS_ABSENT_MONTHS, all}},
+		{cron, {0, 4, all, DLS_MONTHS, all}}
 	],
 	MarchSchedules = lists:flatmap(fun march_edt_schedules/1, lists:seq(2015,2020)),
 	NovSchedules = lists:flatmap(fun november_edt_schedules/1, lists:seq(2015,2020)),
@@ -28,10 +28,10 @@ splitSchedules(Year, Month, SplitDay, BeforeOffset, AfterOffset, DaysInMonth) ->
 	MonthBeforeSchedule ++ MonthAfterSchedule.
 
 november_edt_schedules(Year) ->
-       splitSchedules(Year, 11, first_sunday_of_november(Year), 19, 20, 30).	
+       splitSchedules(Year, 11, first_sunday_of_november(Year), 4, 5, 30).	
 
 march_edt_schedules(Year) ->
-       splitSchedules(Year, 3, second_sunday_of_march(Year), 20, 19, 31).	
+       splitSchedules(Year, 3, second_sunday_of_march(Year), 5, 4, 31).	
 
 first_sunday_of_november(Year) -> 
 	YearMapping = dict:from_list([
