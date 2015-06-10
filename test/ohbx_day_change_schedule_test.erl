@@ -5,8 +5,16 @@
 
 edt_schedule_test() ->
   FULL_SCHEDULE = ohbx_day_change_schedule:schedules_for_EDT(),
-  ?assertEqual(lists:member({cron, {0,5,all,[1,2,12],all}},FULL_SCHEDULE),true),
-  ?assertEqual(lists:member({cron, {0,4,all,lists:seq(4,10),all}},FULL_SCHEDULE),true),
+  ?assertEqual(lists:member({cron, {[0],[5],all,[1],all}},FULL_SCHEDULE),true),
+  ?assertEqual(lists:member({cron, {[0],[5],all,[2],all}},FULL_SCHEDULE),true),
+  ?assertEqual(lists:member({cron, {[0],[5],all,[12],all}},FULL_SCHEDULE),true),
+  ?assertEqual(lists:member({cron, {[0],[4],all,[4],all}},FULL_SCHEDULE),true),
+  ?assertEqual(lists:member({cron, {[0],[4],all,[5],all}},FULL_SCHEDULE),true),
+  ?assertEqual(lists:member({cron, {[0],[4],all,[6],all}},FULL_SCHEDULE),true),
+  ?assertEqual(lists:member({cron, {[0],[4],all,[7],all}},FULL_SCHEDULE),true),
+  ?assertEqual(lists:member({cron, {[0],[4],all,[8],all}},FULL_SCHEDULE),true),
+  ?assertEqual(lists:member({cron, {[0],[4],all,[9],all}},FULL_SCHEDULE),true),
+  ?assertEqual(lists:member({cron, {[0],[4],all,[10],all}},FULL_SCHEDULE),true),
   ?assert(lists:member({oneshot, {{2017,3,11},{5,0,0}}},FULL_SCHEDULE)),
   ?assert(lists:member({oneshot, {{2017,3,12},{4,0,0}}},FULL_SCHEDULE)),
   ?assert(lists:member({oneshot, {{2016,11,5},{4,0,0}}},FULL_SCHEDULE)),
