@@ -2,9 +2,11 @@
 
 -behaviour(gen_server).
 
--export([code_change/3, handle_info/2, init/1, terminate/2, handle_cast/2, handle_call/3]).
+-export([code_change/3, handle_info/2, init/1, terminate/2, handle_cast/2, handle_call/3, start_link/0]).
 
 -include("amqp_client.hrl").
+
+start_link() -> gen_server:start_link(?MODULE, [], []).
 
 code_change(_OldVsn, State, _Extra) -> {ok, State}.
 
@@ -12,8 +14,8 @@ handle_info(_Info, State) -> {noreply, State}.
 
 %% TODO: Pull amqp settings from app environment.
 init(_Args) -> 
-	ConnectionSettings = application:get_key(openhbx_scheduler, amqp_uri),
-	MessageSettings = application:get_key(openhbx_scheduler, exchange_name),
+	ConnectionSettings = application:get_env(openhbx_scheduler, amqp_uri),
+	MessageSettings = application:get_env(openhbx_scheduler, exchange_name),
         case {ConnectionSettings,MessageSettings} of
 		{undefined,_} -> {stop, amqp_connection_settings_missing};
 		{_,undefined} -> {stop, day_change_settings_missing};

@@ -11,5 +11,8 @@
                   amqp_client 
                  ]},
   {mod, {openhbx_scheduler_app, []}},
-  {env, []}
+  {env, [
+     {amqp_uri, "amqp://guest:guest@localhost:5672"},
+     {exchange_name, ""}
+   ]}
  ]}.
