@@ -34,14 +34,9 @@ constructMessage() ->
   Payload = current_cron_list(),
   Props = #'P_basic'{
 	  delivery_mode = 2,
-	  headers = [
-		  {<<"submitted_timestamp">>, longstr, format_current_time()} 
-  ]},
+	  timestamp = openhbx_scheduler_amqp:simple_timestamp()
+  },
   #amqp_msg{props = Props, payload=Payload}.
 
 current_cron_list() ->
 	list_to_binary(io_lib:print(leader_cron:task_list())).
-
-format_current_time() ->
-	{{Year, Month, Day},{Hours,Minutes,Seconds}} = calendar:universal_time(),
-	list_to_binary(io_lib:format("~w-~2..0w-~2..0w ~2..0w:~2..0w:~2..0w", [Year,Month,Day, Hours, Minutes,Seconds])).

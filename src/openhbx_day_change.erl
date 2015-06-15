@@ -35,9 +35,11 @@ handle_call(notify, _From, {Uri, ExchangeName}) ->
 constructPublish(ExchangeName) ->
   #'basic.publish'{routing_key = <<"info.events.calendar.date_change">>, exchange= list_to_binary(ExchangeName)}.
 
+
 constructMessage() ->
   Props = #'P_basic'{
 	  delivery_mode = 2,
+	  timestamp = openhbx_scheduler_amqp:simple_timestamp(),
 	  headers = [
 		  {<<"current_date">>, longstr, formatCurrentDate()} 
   ]},

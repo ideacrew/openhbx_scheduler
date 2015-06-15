@@ -1,6 +1,6 @@
 -module(openhbx_scheduler_amqp).
 
--export([send_notification/4, parse_amqp_settings/0]).
+-export([send_notification/4, parse_amqp_settings/0, simple_timestamp/0]).
 
 -include("amqp_client.hrl").
 
@@ -35,3 +35,5 @@ parseAmqpConnectionSpec(Settings, DayChangeSettings) ->
 	  {error, _} -> {stop, bad_amqp_uri};
 	  {ok, Value} -> {ok, {Value, DayChangeSettings}}
 	end.
+
+simple_timestamp() -> element(1, now()) * 1000000 + element(2, now()).
