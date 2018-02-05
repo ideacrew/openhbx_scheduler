@@ -17,8 +17,8 @@ edt_schedule_test() ->
   ?assertEqual(lists:member({cron, {[0],[4],all,[10],all}},FULL_SCHEDULE),true),
   ?assert(lists:member({oneshot, {{2017,3,11},{5,0,0}}},FULL_SCHEDULE)),
   ?assert(lists:member({oneshot, {{2017,3,12},{4,0,0}}},FULL_SCHEDULE)),
-  ?assert(lists:member({oneshot, {{2016,11,5},{4,0,0}}},FULL_SCHEDULE)),
-  ?assert(lists:member({oneshot, {{2016,11,6},{5,0,0}}},FULL_SCHEDULE)).
+  ?assert(lists:member({oneshot, {{2018,11,3},{4,0,0}}},FULL_SCHEDULE)),
+  ?assert(lists:member({oneshot, {{2018,11,4},{5,0,0}}},FULL_SCHEDULE)).
 
 second_sunday_of_march_test() ->
   ?assertEqual(ohbx_day_change_schedule:second_sunday_of_march(2015), 8),
