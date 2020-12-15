@@ -39,7 +39,9 @@ first_sunday_of_november(Year) ->
           {2017, 5},
           {2018, 4},
           {2019, 3},
-          {2020, 1}
+          {2020, 1},
+          {2021, 7},
+          {2022, 6}
 	]),
 	fetch_default(Year, YearMapping, 1).
 
@@ -50,7 +52,9 @@ second_sunday_of_march(Year) ->
           {2017, 12},
           {2018, 11},
           {2019, 10},
-          {2020, 8}
+          {2020, 8},
+	  {2021, 14},
+	  {2022, 13}
 	]),
 	fetch_default(Year, YearMapping, 8).
 
