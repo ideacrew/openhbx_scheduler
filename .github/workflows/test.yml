@@ -1,0 +1,17 @@
+name: Test
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-16.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: gleam-lang/setup-erlang@v1.1.2
+        with:
+          otp-version: 18.3
+      - name: Install Rebar
+        run: |
+          exit 1
+      - name: Build with Rebar
+        run: |
+          rebar build
