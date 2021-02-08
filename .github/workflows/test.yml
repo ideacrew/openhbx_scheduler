@@ -10,10 +10,6 @@ jobs:
         run: |
           wget -q https://packages.erlang-solutions.com/erlang/debian/pool/esl-erlang_18.3-1~ubuntu~xenial_amd64.deb
           sudo apt install --allow-downgrades ./esl-erlang_18.3-1~ubuntu~xenial_amd64.deb
-      - name: Install Rebar
-        run: |
-          wget https://github.com/rebar/rebar/wiki/rebar
-          chmod +x rebar
       - name: Build with Rebar
         run: |
           ./rebar get-deps
